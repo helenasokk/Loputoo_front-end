@@ -1,38 +1,255 @@
-.App {
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+* {
+  font-family: "Verdana", cursive, sans-serif;
+  color: #455079;
+}
+
+@viewport {
+  width: device-width ;
+  zoom: 1.0 ;
+}
+
+body {
+  background-color: #7cc6fe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+}
+
+.info {
+  color: antiquewhite;
+}
+
+.info b {
+  color: antiquewhite;
+}
+
+
+.ButtonBox {
+  width: 90%;
+  display: flex;
+  padding: 30px;
+  justify-content: space-around;
+}
+
+.AnswerBox {
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: space-evenly;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.answer-part {
+  margin-left: 5px;
+  margin-right: 5px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* see on ID jaoks */
+#answer-part {
+  margin-left: 5px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.information {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 3px;
+}
+
+.score {
+  align-self: center;
+  margin-left: 60px;
+}
+
+.AnswerBox button {
+  padding: 5px 5px;
+  text-align: center;
+  height: fit-content;
+}
+
+.Box {
+  background-color: #8c9fe2;
+  width: 650px;
+  min-height: 400px;
+  height: min-content;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
+  display: flex;
+  position: relative;
+  justify-content: space-evenly;
+  /*border: 10px solid #61dafb;
+  box-shadow: 10px 5px 5px grey;*/
+}
+@media (max-width: 640px) {
+  .Box {
+    width: 90%;
+
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+
+.Buttons {
+  margin: 0 5px 0 0;
+  padding: 4px 8px;
+  display: inline;
+  flex-grow: 1;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #455079;
+  border-radius: 15px;
+  border: 5px solid #5f8cb9;
+  text-align: center;
+}
+
+.disabled-button {
+  background-color: #5f6ea1;
+}
+
+.Navbar {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.Action_btn {
+  width: 200px;
+  margin: 0 auto;
+  display: inline;
+}
+
+
+/* paneme pealkirja keskele*/
+h1 {
+  /*width:50%;*/
+  margin-bottom: 20px auto;
+  text-align: center;
+}
+
+.score-section {
+  display: flex;
+  position: relative;
+  font-size: 24px;
+  align-items: center;
+  text-align: center;
+  margin-top: 10%;
+  margin-left: 20px;
+  padding: 10px;
+}
+
+/* QUESTION/TIMER/LEFT SECTION */
+.question-section {
+  width: 100%;
+  position: relative;
+}
+
+.question-count {
+  margin-top: 25px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.question-count span {
+  font-size: 28px;
+}
+
+.question-text {
+  margin-bottom: 20px;
+}
+
+.timer-text {
+  background: rgb(230, 153, 12);
+  padding: 15px;
+  margin-top: 20px;
+  margin-right: 20px;
+  border: 5px solid rgb(255, 189, 67);
+  border-radius: 15px;
+  text-align: center;
+}
+
+/* ANSWERS/RIGHT SECTION */
+.answer-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+button {
+  width: 100%;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #455079;
+  border-radius: 15px;
+  display: flex;
+  padding: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  border: 5px solid #5f8cb9;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #58669e;
+}
+
+img {
+  margin-left: 60px;
+  width: 60px;
+  height: auto;
+}
+
+.õnnitlus {
+  color: #2f922f;
+  font-size: 18px;
+  text-align: center;
+  font-family: monospace;
+  margin-left: 10px;
+}
+
+.kurb {
+  color: brown;
+  text-align: center;
+  font-family: monospace;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+button:focus {
+  outline: none;
+}
+
+button svg {
+  margin-right: 5px;
+}
+
+.css-fix {
+  margin-bottom: 40px;
+  margin-top: 30px;
+  white-space: pre-wrap;
+  height: 200px;
+  overflow: auto;
+}
+
+.start-page {
+  /*margin-bottom: 40px;*/
+  font-size: medium;
+  margin-top: 10%;
+  white-space: pre-wrap;
+  height: 400px;
 }
