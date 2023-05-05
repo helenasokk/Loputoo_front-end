@@ -1,7 +1,7 @@
 import React from 'react';
 import "../App.css";
 import Navbar from "../Navbar";
-
+// Esileht koos juhistega
 function Home() {
     return (
         <div>

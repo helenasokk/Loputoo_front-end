@@ -94,8 +94,6 @@ body {
   display: flex;
   position: relative;
   justify-content: space-evenly;
-  /*border: 10px solid #61dafb;
-  box-shadow: 10px 5px 5px grey;*/
 }
 @media (max-width: 640px) {
   .Box {
@@ -135,7 +133,6 @@ body {
 
 /* paneme pealkirja keskele*/
 h1 {
-  /*width:50%;*/
   margin-bottom: 20px auto;
   text-align: center;
 }
@@ -169,16 +166,6 @@ h1 {
 
 .question-text {
   margin-bottom: 20px;
-}
-
-.timer-text {
-  background: rgb(230, 153, 12);
-  padding: 15px;
-  margin-top: 20px;
-  margin-right: 20px;
-  border: 5px solid rgb(255, 189, 67);
-  border-radius: 15px;
-  text-align: center;
 }
 
 /* ANSWERS/RIGHT SECTION */
@@ -247,7 +234,6 @@ button svg {
 }
 
 .start-page {
-  /*margin-bottom: 40px;*/
   font-size: medium;
   margin-top: 10%;
   white-space: pre-wrap;

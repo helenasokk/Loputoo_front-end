@@ -7,6 +7,9 @@ function Navbar() {
   let location = useLocation();//Kontrollimiseks, mis lehel hetkel asume
   let navigate = useNavigate();
 
+  // Järgnevad funktsioonid on mõeldud selleks, et kontrollida, mis lehel hetkel kasutaja viibib
+  // Ehk kui kasutaja on esimese alammängu lehel ja soovib uuesti selle alamlehe laadida vajutades 'Mäng 1' nupule,
+  // siis antud leht lihtsalt värskendab ennast ehk serverist küsitakse uued andmed
   const refreshPage1 = () => {
     if (location.pathname === "/mang1") {
       window.location.reload(true);
@@ -31,6 +34,7 @@ function Navbar() {
     }
   }
 
+  // Tagastan lehe ülemise osa, et oleks võimalik liikuda alamlehtede vahel
   return (
     <div>
       <h1><Link to="/" style={{textDecoration: "none"}}>Võõrsõnade mäng</Link></h1>

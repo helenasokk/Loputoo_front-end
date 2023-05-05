@@ -10,11 +10,11 @@ import Navbar from "../Navbar"
 
 
 function App() {
-
-  //const navigate = useNavigate();
+  // muutuja, mis salvestab serverilt saadud andmed
   const [vihjed, setVihjed] = useState([{sona: [], tase: "", vihje: []}]);
 // currentQuestion muutuja näitab, mitmes võõrsõna hetkel käsil on
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  // muutuja, mis peab meeles, mitu sõna on juba ära arvatud
   const [sonadeArv, setSonadeArv] = useState(0);
   // showScore muutuja aitab meeles pidada, kas oleme jõudnud viimase võõrsõnani ehk mängu lõppu
   // tõeväärtus, kas näidata lõppskoori või mitte
@@ -22,15 +22,7 @@ function App() {
 	// muutuja, mis hoiab endas skoori
 	const [score, setScore] = useState(0);
 
-  /*// selleks, et saada back-endist data kätte
-  useEffect(() => {
-    fetch("/mang1").then((res) =>
-	res.json().then((data) => {
-        setVihjed(list(data));
-      })
-    );
-  }, []);*/
-
+  // selleks, et saada back-endist data kätte
   function getData() {
       axios({
         method: "GET",
@@ -52,7 +44,7 @@ function App() {
         getData()
       }, []);
 
-  console.log(vihjed)
+  //console.log(vihjed)
   //console.log(vihjed[0])
   //console.log(vihjed[0].sõna)
   //console.log(typeof vihjed[0])
@@ -66,28 +58,32 @@ function App() {
   const [currentVihjeID, setCurrentVihjeID] = useState(0)
   // currentVihje muutujasse salvestame vihje
   const [currentVihje, setCurrentVihje] = useState("")
+  // muutuja, kuhu salvestan kõik lisateavitused, mis on vaja ekraanile alles jätta (nt teavitus, kui vastati valesti või mis oli õige vastus)
   const [teavitus, setTeavitus] = useState("")
-// pean leidba parema viisi kuidas kõiki vihjeid väljastada ning eelnevad alles jätta
+  // vihjeteKast muutujasse salvestame järjest kõik vihjed, mis on kasutajale + juba pakutud vastused ning kõik teavitused
   const [vihjeteKast, setVihjeteKast] = useState('Tere tulemast võõrsõnade äraarvamise mängu! Mänguga alustamiseks vajuta nuppu "Järgmine vihje". Õnn kaasa! :)')
-
+  // tõeväärtus, mis näitab, kas kasutaja juba teab vastust (vastas õigesti või küsis vastust ette)
   const [teabVastust, setTeabVastust] = useState(false)
-
+  // tõeväärtus, kas kasutaja vastas õigesti, et saaks kuvada õnnitluse
   const [onnitle, setOnnitle] = useState(false)
-
+  // muutuja, mis salvestab kõik ära arvatud võõrsõnad koos tõeväärtusega, kas vastati õigesti
+  // see on selleks, et saaks mängu lõppedes tulemused kasutajale kuvada
   const [vastused, setVastused] = useState([{vaste: "", oige: false, raskus:""}])
-
+  // tõeväärtus, kas oleme jõudnud viimase sõnani
   const [kasViimane, setKasViimane] = useState(true)
-
+  // kui kasutaja saab esimese vihje või alles alustab mängu, siis ei tohiks saada võõrsõna ette ütlemist küsida
   const [lubaSpikker, setLubaSpikker] = useState(false)
-
+  // tõeväärtus, kas kasutaja vastas valesti, et saaks kuvada vastava teavituse
   const [kurb, setKurb] = useState(false);
+  // tõeväärtus, kas saab järgmist vihjet küsida (kui vihjed on otsas, siis ei ole vaja klõpsida 'Järgmine vihje' nuppu)
+  const [showResults, setShowResults] = useState(true)
 
 // muudame inputi ära iga kord, kui kasutaja sisestab mingi sõna
   const change = event => {
 	setSisestus(event.target.value)
 	setVastus(event.target.value)
   }
-
+// iga kord, kui üks võõrsõna on ära arvatud lisame vastuse 'vastused' listi
   const addRow=(sõna, kasõige, raskusaste)=>{
 	let uusVastus={vaste:sõna,oige:kasõige,raskus:raskusaste}
 	setVastused([...vastused,uusVastus])
@@ -96,45 +92,37 @@ function App() {
   // Mida teha siis kui kasutaja vajutab nupule Saada
   const click = () => {
 	setSisestus('')
+	// Kontroll, kas vihjed on otsas
 	if (currentQuestion >= vihjed.length){
-		setShowScore(true)
-		} else {
-		console.log(vastus)
-		console.log(vihjed[currentQuestion].sõna[0])
-		console.log(vihjed[currentQuestion].vihjeteNkr)
-		//Võrdlus töötab :)
+		setShowScore(true)// Siis võib näidata skoori
+		} else {// kui vihjeid on veel
+		// Kui sisestati õige vastus
 		if (vihjed[currentQuestion].sõna[0] === vastus.toLowerCase() | vihjed[currentQuestion].sõna[1].toLowerCase() === vastus.toLowerCase()) {
-			setOnnitle(true)
-			setLubaSpikker(true)
-			addRow(vihjed[currentQuestion].sõna[0], true, vihjed[currentQuestion].raskus)
-			/*if (oigedVastused === ""){
-				setOigedVastused(`${oigedVastused} <b className='õnnitlus'> ${vihjed[currentQuestion].sõna[0]} </b>`)
-			} else {
-				setOigedVastused(`${oigedVastused} | <b className='õnnitlus'> ${vihjed[currentQuestion].sõna[0]} </b>`)
-			}*/
-			setShowResults(true)
-			if (vihjed[currentQuestion].raskus === "kerge") {
+			setOnnitle(true)// Võib õnnitleda
+			setLubaSpikker(true)// Ütle ette nupp ei ole aktiivne
+			addRow(vihjed[currentQuestion].sõna[0], true, vihjed[currentQuestion].raskus)// Lisame vastuse 'vastused' listi
+			if (vihjed[currentQuestion].raskus === "kerge") {// kui tegemist oli kerge sõnaga on skoor 10
 				setScore(score + 10)
-			} else {
+			} else {// keskmise sõna puhul skoor 20
 				setScore(score + 20)
 			}
+			// nullime kõik eelnev võõrsõna muutujad, sest nüüd tuleb uus sõna
 			setCurrentVihjeID(0)
 			setCurrentVihje("")
-			setCurrentQuestion(currentQuestion + 1)
+			setCurrentQuestion(currentQuestion + 1)// liigume uue sõna juurde
+			// teavitame kasutajat, et sisestati õige vastus
 			setVihjeteKast(vihjeteKast + "\n" + currentVihje + "\n" + teavitus + "\nTubli! Mõtlesin sõna " + "<b>" + vastus + "</b>")
 			setTeavitus("")
-			setTeabVastust(true)
-			setShowResults(true)
-			if (sonadeArv === vihjed.length) {
-				setKasViimane(true)
+			setTeabVastust(true)// kasutaja teab nüüd vastust
+			setShowResults(true)// saab küsida järgmist sõna
+			if (sonadeArv === vihjed.length) {// kui leiti viimane sõna
+				setKasViimane(true)// siis ei saa enam Ütle ette nupule vajutada
 			}
-		} else {
+		} else {// kasutaja vastas valesti
 			// lisasin juurde kasutaja sisestatud vastuse, et oleks kasutajale näha, mis sõnu ta juba arvanud on
 			// Aitab vb vältida kordusi
 			setKurb(true)
-			setTeavitus(teavitus + "\n"+ "<b>" + vastus + "</b>" + " Kahjuks vastasid valesti :(\n")
-			//setVihjeteKast(vihjeteKast + '\n' + teavitus)
-			console.log(currentVihjeID)
+			setTeavitus(teavitus + "\n"+ "<b>" + vastus + "</b>" + " Kahjuks vastasid valesti :(\n")// vastav teavitus, koos kasutaja sisestatud vale vastusega
 		}
 	}
   }
@@ -149,39 +137,36 @@ function App() {
 	//Kui mäng on jõudnud lõppu ja rohkem vihjeid ei ole küsida
 	if (sonadeArv >= vihjed.length && kasViimane){
 		setVihjeteKast("")
-		setShowScore(true)
+		setShowScore(true)// näitame tulemust
 	} //kui vastus on juba käes, siis peaks ette viskama vihje küsimise peale uue sõna vihjed
-	else if (teabVastust){
-		setSonadeArv(sonadeArv + 1)
-		setCurrentVihje(vihjed[currentQuestion].vihjeteNkr[currentVihjeID])
+	else if (teabVastust){// eelnev sõna vastati õigesti või küsiti sõna ette ütlemist
+		setSonadeArv(sonadeArv + 1)// loeme kokku, mitu sõna on juba olnud
+		setCurrentVihje(vihjed[currentQuestion].vihjeteNkr[currentVihjeID])// järgmine vihje
 		setVihjeteKast(`\n${currentVihje}`)
-		setCurrentVihjeID(currentVihjeID + 1)
+		setCurrentVihjeID(currentVihjeID + 1)// suurendame vihje indeksit
 		setTeavitus("")
-		setTeabVastust(false)
-		setSonadeArv(sonadeArv + 1)
-	} else
-	{
+		setTeabVastust(false)// kasutaja ei tea veel vastust
+	} else// kasutaja ei tea vastust
+	{// kui vihjeid ei ole veel otsas
 		if (currentQuestion < vihjed.length && currentVihjeID < vihjed[currentQuestion].vihjeteNkr.length) {
-			setLubaSpikker(false)
-			if (currentVihjeID === 0 && (currentQuestion === 0 )){
+			setLubaSpikker(false)// kasutaja võib vastust ette küsida
+			if (currentVihjeID === 0 && (currentQuestion === 0 )){// kui oleme alles esimese sõna ja vihje juures
 				setKasViimane(false)
 				setSonadeArv(sonadeArv + 1)
 			}
-			console.log(currentVihjeID)
 			setCurrentVihje(vihjed[currentQuestion].vihjeteNkr[currentVihjeID])
 			setVihjeteKast(`${vihjeteKast}\n${currentVihje}${teavitus}`)
 			setTeavitus("")
 			setCurrentVihjeID(currentVihjeID + 1)
-		} else if (currentVihjeID >= vihjed[currentQuestion].vihjeteNkr.length){
+		} else if (currentVihjeID >= vihjed[currentQuestion].vihjeteNkr.length){// vihjed on otsas
 			setShowResults(false)
+			// Anname kasutajale sellest teada, et vihjed otsas
 			setVihjeteKast(vihjeteKast + '\n' + currentVihje + "\n" + "<b>" + "Vihjed said otsa!" + "</b>" + "\n")
 			setCurrentVihje("")
 		}
 	}
   }
 
-  // Vihjed said otsa -> vastas õigesti -> Järgmine vihje nupp ei ole enam aktiivne
-  // kui oled esimese mängu lõpetanud, siis uuesti 1.mängu nupule vajutades ei tule uut mängu ette??
 
   // Kui kasutaja vajutab Enterit, siis suuname click() funktsiooni juurde
   const _handleKeyDown = (e) => {
@@ -190,45 +175,29 @@ function App() {
 	}
   }
 
-  // Mida teha siis, kui kasutaja on vajutanud nuppu Vastus
+  // Mida teha siis, kui kasutaja on vajutanud nuppu Ütle ette
   const ytleEtte = () => {
 	setKurb(true)
-	/*if (teavitus != ""){
-		setTeavitus(teavitus + "\n Mõtlesin sõna " + "<b>" + vihjed[currentQuestion].sõna + "</b>")
-	} else {*/
-		setTeavitus(teavitus + "\n Mõtlesin sõna " + "<b>" + vihjed[currentQuestion].sõna[0] + "</b>" + ".")
-	//}
+	// Teavitus, mis sõnaga oli tegemist
+	setTeavitus(teavitus + "\n Mõtlesin sõna " + "<b>" + vihjed[currentQuestion].sõna[0] + "</b>" + ".")
 	setVihjeteKast(vihjeteKast + '\n' +currentVihje)
-	setLubaSpikker(true)
-	if (sonadeArv === vihjed.length) {
-		setKasViimane(true)
+	setLubaSpikker(true)// Ütle ette nupp ei ole aktiivne
+	if (sonadeArv === vihjed.length) {// kui viimane sõna
+		setKasViimane(true)// jätame meelde, et viimane sõna
 		setCurrentVihje("")
 	}
-	else {
+	else {// läheme lihtsalt järgmise sõna juurde edasi
 		setCurrentVihje("")
 		setCurrentQuestion(currentQuestion + 1)
 		setCurrentVihjeID(0)
 		setShowResults(true)
 	}
-	/*if (vihjed[currentQuestion].raskus === "kerge"){
-		vastusedKerged.concat([vihjed[currentQuestion].sõna, false])
-	} else if (vihjed[currentQuestion].raskus === "keskmine"){
-		vastusedKeskm.concat([vihjed[currentQuestion].sõna, true])
-	}*/
+	// lisame sõna 'vastused' listi tõeväärtusega false, sest kasutaja ei arvanud seda ise ära
 	addRow(vihjed[currentQuestion].sõna[0], false, vihjed[currentQuestion].raskus)
-	/*if (oigedVastused === ""){
-		setOigedVastused(`${oigedVastused} <b className='kurb'> ${vihjed[currentQuestion].sõna[0]} </b>`)
-	} else {
-		setOigedVastused(`${oigedVastused} | <b className='kurb'> ${vihjed[currentQuestion].sõna[0]} </b>`)
-	}*/
 	setTeabVastust(true)
   }
 
-  const [showResults, setShowResults] = useState(true)
-
   return (
-    //<div className="App"> <Vihjed vihjed={vihjed} /></div>
-	//sx={{backgroundColor: '#f5f5f9', color: 'rgba(0, 0, 0, 0.87)', border: '1px solid #dadde9'}}
 	<div>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<Navbar />

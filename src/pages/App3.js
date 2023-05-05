@@ -8,18 +8,26 @@ import Navbar from "../Navbar";
 
 function App () {
 
+    // muutuja, mis salvestab serverist saadavad andmed
     const [tagastus, setTagastus] = useState([{sona: [], lauseV: "", lauseP: "", sonad: []}]);
+    // muutuja, mis hoiab endas mänguskoori
     const [score, setScore] = useState(0);
+    // tõeväärtus, kas mäng on alanud või mitte (kas kuvada mängu vaade)
     const [showGame, setShowGame] = useState(false);
+    // muutuja, mida kasutan lausete indeksite leidmiseks
     const [currentLause, setCurrentLause] = useState(0);
+    // tõeväärtus, kas kasutaja on juba vastanud (kas kuvada nupp Uuesti!)
     const [kasVastatud, setKasVastatud] = useState(false);
+    // tõeväärtus, kas kasutaja vajutas nuppu Kontrolli! ehk vastas ära
     const [vastatud, setVastatud] = useState(false);
 
+    // tegin eraldi muutujad iga lause jaoks
     const [vastus1, setVastus1] = useState("")
     const [vastus2, setVastus2] = useState("")
     const [vastus3, setVastus3] = useState("")
     const [vastus4, setVastus4] = useState("")
 
+    // selleks, et saada back-endist data kätte
     function getData() {
       axios({
         method: "GET",
@@ -40,37 +48,40 @@ function App () {
     useEffect(() => {
         getData()
       }, []);
-      //console.log(tagastus)
 
 
 
+  //mängu alustamine
   const alusta = () => {
     setCurrentLause(0)
-    setShowGame(true)
-    shuffleArray(tagastus[tagastus.length - 1].sõnad)
+    setShowGame(true)// näitame mängu vaadet
+    shuffleArray(tagastus[tagastus.length - 1].sõnad)// selleks, et valikvastused ei oleks samas järjekorras, mis laused
   }
+  // Esimese lause jaoks
   const [isCorrect1, setIsCorrect1] = useState(false)
   const changeV1 = event => {
-    setVastus1(event.target.value)
+    setVastus1(event.target.value)// pean kasutaja sisestatud vastuse meelde jätma
   }
+  // Teise lause jaoks
   const [isCorrect2, setIsCorrect2] = useState(false)
   const changeV2 = event => {
     setVastus2(event.target.value)
   }
+  // Kolmanda lause jaoks
   const [isCorrect3, setIsCorrect3] = useState(false)
   const changeV3 = event => {
     setVastus3(event.target.value)
   }
+  // Neljanda lause jaoks
   const [isCorrect4, setIsCorrect4] = useState(false)
   const changeV4 = event => {
     setVastus4(event.target.value)
   }
 
+  // siin toimub vastuste kontrollimine, kui vajutati nuppu Kontrolli!
   const kontroll = () => {
-    setKasVastatud(true)
     var kokku = 0 // mitu on õigesti vastatud ehk kui suur peaks skoor olema
     if (vastus1 === tagastus[currentLause].sõna[1]) {
-      //console.log(vastus1)
       setIsCorrect1(true)
       kokku += 1
     } else { // tühjaks jäetud kastid tuleb ka kuidagi ära märkida
@@ -78,7 +89,6 @@ function App () {
       setVastus1("___")
     }
     if (vastus2 === tagastus[currentLause + 1].sõna[1]) {
-      //console.log(vastus2)
       setIsCorrect2(true)
       kokku += 1
     } else {
@@ -86,7 +96,6 @@ function App () {
       setVastus2("___")
     }
     if (vastus3 === tagastus[currentLause + 2].sõna[1]) {
-      //console.log(vastus3)
       setIsCorrect3(true)
       kokku += 1
     } else {
@@ -94,7 +103,6 @@ function App () {
       setVastus3("___")
     }
     if (vastus4 === tagastus[currentLause + 3].sõna[1]) {
-      //console.log(vastus4)
       setIsCorrect4(true)
       kokku += 1
     } else {
@@ -117,14 +125,10 @@ function App () {
   }
 
 
+  // Kui vajutatakse nuppu Uuesti!
   const uusGame = () => {
       window.location.reload(true);
   }
-
-  /*const handleChange = (event) => {
-    this.setState({selectValue: event.target.value}, ()=> {alert(`Value: ${select.selectValue}`)});
-    } */
-
 
     return (
       <div>

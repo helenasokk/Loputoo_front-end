@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-//import {Router, Route, useNavigate} from 'react-router-dom';
 import axios from "axios";
 import Tooltip from '@mui/material/Tooltip';
 import Button from '@mui/material/Button';
@@ -11,15 +10,19 @@ import Navbar from "../Navbar";
 
 function App() {
 
-    //const navigate = useNavigate();
+    // muutuja, mis salvestab serverist saadavad andmed
     const [tagastus, setTagastus] = useState([{sona: [], lauseV: "", lauseP: "", vale: ""}]);
     // showScore muutuja aitab meeles pidada, kas oleme jõudnud viimase võõrsõnani ehk mängu lõppu
     // tõeväärtus, kas näidata lõppskoori või mitte
       const [showScore, setShowScore] = useState(false);
       // muutuja, mis hoiab endas skoori
       const [score, setScore] = useState(0);
-
+      // tõeväärtus, kas saab küsida uut lauset
       const [uusLause, setUusLause] = useState(true);
+       //vastus on see, mille kasutaja sisestab
+      const [vastus, setVastus] = useState("")
+      // selleks, et saaksin input kasti tühjaks teha iga kord, kui kasutaja on sisestanud uue vastuse
+      const [sisestus, setSisestus] = useState("")
 
     // selleks, et saada back-endist data kätte
     function getData() {
@@ -50,13 +53,6 @@ function App() {
     //console.log(typeof vihjed[0])
     //console.log(typeof vihjed[0])
 
-    //vastus on see, mille kasutaja sisestab
-    const [vastus, setVastus] = useState("")
-    const [sisestus, setSisestus] = useState("")
-
-  // pean leidba parema viisi kuidas kõiki vihjeid väljastada ning eelnevad alles jätta
-    //const [vihjeteKast, setVihjeteKast] = useState("Tere tulemast võõrsõnade eristamise mängu! Sulle on ette antud lause, kus õige võõrsõna on asendatud valega. Kui ei oska ära arvata, vajuta nuppu Vastus. Õnn kaasa :)")
-
   // muudame inputi ära iga kord, kui kasutaja sisestab mingi sõna
     const change = event => {
       setSisestus(event.target.value)
@@ -64,44 +60,43 @@ function App() {
     }
     // Mida teha siis kui kasutaja vajutab nupule Saada
     const click = () => {
-        setSisestus('')
+        setSisestus('')// muudame sisestuse välja tühjaks
         //console.log(vastus)
         //console.log(tagastus[mitmesSentence].õige)
-        //Võrdlus töötab :)
-        if (mitmesSentence < tagastus.length){
-            if (tagastus[mitmesSentence].õige[0] === vastus.toLowerCase() || tagastus[mitmesSentence].õige[1] === vastus.toLowerCase()) {
-                setOnnitle(true)
-                setSpikker(false)
-                setScore(score + 20)
-                setMitmesSentence(mitmesSentence + 1)
-                //setVihjeteKast("")
+        if (mitmesSentence < tagastus.length){// kui laused ei ole veel otsas
+          // kui sisestati õige võõrsõna õiges käändes
+            if (tagastus[mitmesSentence].õige[1].toLowerCase() === vastus.toLowerCase()) {
+                setOnnitle(true)// siis võime õnnitleda
+                setSpikker(false)// Ütle ette nupp ei ole aktiivne
+                setScore(score + 20)// suurendame skoori
+                setMitmesSentence(mitmesSentence + 1)// liigume järgmise lause juurde
+                // Teavitame kasutajat õige vastuse sisestamisest
                 setCurrentSentence(currentSentence + "\n\n" + "Leidsid õige vastuse! " + "<b>" + tagastus[mitmesSentence].asendus + "</b>" + " asemel oleks pidanud olema " + "<b>" + tagastus[mitmesSentence].õige[1] + "</b>" + ".")
-                setUusLause(true)
-            } else {
-                //console.log("Vale vastus")
-                //alert("Kahjuks on see vale vastus :(")
+                setUusLause(true)// saab uut lauset küsida
+            } else {// kasutaja vastas valesti
                 setKurb(true)
+                // Teavitus
                 setCurrentSentence(currentSentence + "\n\n" + "<b>" + vastus + "</b>" + " -- Kahjuks on see vale vastus :(")
-                //setCurrentVihjeID(currentVihjeID + 1)
             }
-        } else {
+        } else {// laused on otsas
             setShowScore(true)
         }
     }
 
-    // currentSentence muutuja näitab, mitmes lause hetkel käsil on
+    // currentSentence muutuja hoiab endas vaadeldavat lauset
     const [currentSentence, setCurrentSentence] = useState('Tere tulemast võõrsõnade eristamise mängu! Mänguga alustamiseks vajuta nuppu "Järgmine lause". Õnn kaasa! :)')
-
+    // mitmesSentence muutuja näitab, mis on vaadeldava lause indeks
     const [mitmesSentence, setMitmesSentence] = useState(0);
-
+    // mitmesLause muutuja näitab, mitmes lause hetkel käsil on
     const [mitmesLause, setMitmesLause] = useState(0);
-
+    // tõeväärtus, kas kasutaja sisestas õige vastuse
     const [onnitle, setOnnitle] = useState(false);
-
+    // tõeväärtus, kas kasutaja sisestas vale vastuse
     const [kurb, setKurb] = useState(false);
-
+    // kui kasutaja sai vastuse teada, siis Saada nupp ei ole enam aktiivne
     const [spikker, setSpikker] = useState(false);
 
+    // funktsioon, mis leiab lause, asendades võõrsõna paksus kirjas
     const leiaSentence = () => {
         setCurrentSentence(tagastus[mitmesSentence].vasak + " "+ "<b>" + tagastus[mitmesSentence].asendus + "</b>" + tagastus[mitmesSentence].parem)
         return tagastus[mitmesSentence].vasak + " "+ "<b>" + tagastus[mitmesSentence].asendus + "</b>" + tagastus[mitmesSentence].parem
@@ -114,6 +109,7 @@ function App() {
       }
     }
 
+    // järgmise lause küsimise funktsioon
     const alusta = () => {
       setMitmesLause(mitmesLause + 1)
       setSpikker(true)
@@ -127,12 +123,11 @@ function App() {
         }
     }
 
-    // Mida teha siis, kui kasutaja on vajutanud nuppu Vastus
+    // Mida teha siis, kui kasutaja on vajutanud nuppu Ütle ette
     const ytleEtte = () => {
         if (mitmesSentence >= tagastus.length){
             setShowScore(true)
         } else {
-            //setVihjeteKast("")
             setMitmesSentence(mitmesSentence + 1)
             setCurrentSentence(currentSentence + "\n" + "\nÕige vastus oleks olnud " + "<b>" + tagastus[mitmesSentence].õige[1] + "</b>")
             setUusLause(true)
@@ -143,7 +138,6 @@ function App() {
 
 
     return (
-      //<div className="App"> <Vihjed vihjed={vihjed} /></div>
       <div>
       <Navbar />
       <div className='Box'>

@@ -1,8 +1,6 @@
 import ReactDOM from "react-dom/client";
 import {
   BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
   Routes,
   Route
 } from "react-router-dom";
@@ -10,12 +8,10 @@ import {
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Mang1 from "./pages/App";
-//import Blogs from "./pages/Blogs";
-//import Contact from "./pages/Contact";
 import Mang2 from "./pages/App2";
 import Mang3 from "./pages/App3";
 
-
+// Selleks, et lehtede ruutimine toimuks korrektselt
 export default function App() {
   return (
     <BrowserRouter>
@@ -35,6 +31,3 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <App />
 );
-
-// Herokusse üles
-// neljapäevaks kirjalik töö
