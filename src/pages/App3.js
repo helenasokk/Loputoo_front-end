@@ -170,7 +170,7 @@ function App () {
                         <span>Skoor {score}</span>/{(tagastus.length - 1) * 10}
                     </div>
                     <div> {tagastus[tagastus.length - 1].sõnad.join(' | ')} </div>
-                    <div className='css-fix' >
+                    <div className='game-three'>
                       {vastatud ? <li className="esimene" style={{color: isCorrect1 ? 'green' : 'brown'}}>{tagastus[currentLause].vasak}<b> {vastus1} </b>{tagastus[currentLause].parem} {isCorrect1 ? null : (<span><img style={{width: "40px", height: "auto"}} src={piltLose} alt="Pilt" /> <b>{tagastus[currentLause].sõna[1]}</b></span>)}</li> : <li>{tagastus[currentLause].vasak} <input onChange={changeV1} value={vastus1}/>{tagastus[currentLause].parem}</li>}
                       {vastatud ? <li className="teine" style={{color: isCorrect2 ? 'green' : 'brown'}}>{tagastus[currentLause + 1].vasak}<b> {vastus2} </b>{tagastus[currentLause + 1].parem} {isCorrect2 ? null : (<span><img style={{width: "40px", height: "auto"}} src={piltLose} alt="Pilt" /> <b>{tagastus[currentLause + 1].sõna[1]}</b></span>)}</li> : <li>{tagastus[currentLause + 1].vasak} <input onChange={changeV2} value={vastus2}/>{tagastus[currentLause + 1].parem}</li>}
                       {vastatud ? <li className="kolmas" style={{color: isCorrect3 ? 'green' : 'brown'}}>{tagastus[currentLause + 2].vasak}<b> {vastus3} </b>{tagastus[currentLause + 2].parem} {isCorrect3 ? null : (<span><img style={{width: "40px", height: "auto"}} src={piltLose} alt="Pilt" /> <b>{tagastus[currentLause + 2].sõna[1]}</b></span>)}</li> : <li>{tagastus[currentLause + 2].vasak} <input onChange={changeV3} value={vastus3}/>{tagastus[currentLause + 2].parem}</li>}

@@ -160,10 +160,11 @@ function App() {
 					 title={
 						<div style={{fontSize: "15px", color: "white", textAlign: "justify"}}>
 							<p className="info">Mängid võõrsõnade eristamise mängu.</p>
-							<p className="info">Ma hakkan sulle ühekaupa lauseid pakkuma, milles on õiged võõrsõnad asendatud valedega (paksus kirjas).</p>
+							<p className="info">Ma hakkan sulle ühekaupa lauseid pakkuma, milles on õiged võõrsõnad asendatud kirjapildilt väga sarnase võõrsõnaga (paksus kirjas).</p>
 							<p className="info">Sinu ülesandeks on vale võõrsõna asemel õige trükkida all asuvasse kasti ning vajutada nuppu <b>Saada</b> (või Enter). Selleks, et järgmist lauset näha, vajuta nuppu <b>Järgmine lause</b>.</p>
 							<p className="info">Kui sa ei oska õige tähendusega võõrsõna leida, siis vajuta nuppu <b>Ütle ette</b>, kuid pea meeles, et selle eest ma sulle punkte ei anna.</p>
 							<p className="info">Iga õigesti vastatud võõrsõna eest annan sulle <b>20 punkti</b>.</p>
+              <p className="info"><b>NB! Põõra tähelepanu ka sellele, et sisestatav sõna oleks õiges käändes.</b></p>
 						</div>
 						}>
 					<Button style={{borderRadius: '25px', width: '2px', height: 'auto'}} variant="outlined" size="small">?</Button>

@@ -233,6 +233,12 @@ button svg {
   overflow: auto;
 }
 
+.game-three {
+  margin-bottom: 40px;
+  margin-top: 30px;
+  white-space: pre-wrap;
+}
+
 .start-page {
   font-size: medium;
   margin-top: 10%;
